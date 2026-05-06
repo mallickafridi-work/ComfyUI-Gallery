@@ -1,10 +1,10 @@
 // src/FolderTree.tsx
 import { useState } from "react";
-import { ChevronRight, ChevronDown, Folder } from "lucide-react";
+import { FolderOpen, Folder } from "lucide-react";
 
 function FolderTree({ node, onClick, currentFolder }) {
   return (
-    <ul className="pl-2">
+    <ul className="pl-2 transition-all duration-200 ease-in-out">
       <FolderNode
         key={node.path}
         node={node}
@@ -24,24 +24,25 @@ function FolderNode({ node, onClick, currentFolder }) {
   return (
     <li className="list-none">
       <div
-        className={`bg-card flex items-center gap-2 cursor-pointer rounded-xs px-2 py-1 my-0.5
-          ${isActive ? "bg-blue-100 dark:bg-blue-900 font-semibold" : "hover:bg-gray-100 dark:hover:bg-gray-800"}`}
+        className={`border-t border-l border-ring flex items-center gap-2 cursor-pointer rounded-xs px-2 py-1 my-0.5
+          ${isActive ? "bg-blue-300 dark:bg-blue-900 font-semibold" : "hover:bg-gray-100 dark:hover:bg-gray-800"}`}
         onClick={() => {
           toggle();
           onClick(node.path);
         }}
       >
+
         {node.children && node.children.length > 0 ? (
           open ? (
-            <ChevronDown className="w-4 h-4 text-black" />
+            <FolderOpen className={`w-4 h-4 ${isActive ? "text-blue-600" : "text-blue-500"}`} />
           ) : (
-            <ChevronRight className="w-4 h-4 text-black" />
+            <Folder className={`w-4 h-4 ${isActive ? "text-blue-600" : "text-blue-500"}`} />
           )
         ) : (
-          <span className="w-4 h-4" />
+          <Folder className={`w-4 h-4 ${isActive ? "text-blue-600" : "text-blue-500"}`} />
         )}
 
-        <Folder className={`w-4 h-4 ${isActive ? "text-blue-600" : "text-blue-500"}`} />
+
         <span className="truncate">{node.name}</span>
       </div>
 

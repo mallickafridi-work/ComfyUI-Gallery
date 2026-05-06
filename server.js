@@ -35,6 +35,7 @@ async function getFolderTree(folderPath) {
 
 app.post("/api/load-path", async (req, res) => {
   const { path: folderPath } = req.body;
+
   const normalized = path.resolve(folderPath);
 
   try {
