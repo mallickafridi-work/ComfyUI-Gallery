@@ -1,12 +1,37 @@
 import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "./ui/button";
+import FolderTree from "./FolderTree";
+import GalleryContainer from "./GalleryContainer";
+
+interface FolderNode {
+    name: string;
+    path: string;
+    children: FolderNode[];
+}
 
 const PathLoader = () => {
 
     const [path, setPath] = useState("");
-    const [subfolders, setSubfolders] = useState<string[]>([]);
+    const [tree, setTree] = useState<FolderNode | null>(null);
     const [images, setImages] = useState<string[]>([]);
+    const [currentFolder, setCurrentFolder] = useState("");
+
+    // Load saved path from localStorage on mount
+    useEffect(() => {
+        const savedPath = localStorage.getItem("localPath");
+        if (savedPath) {
+            setPath(savedPath);
+            // auto-load if path exists
+            mutate(savedPath);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (tree) {
+            console.log("Tree object in state:", tree);
+        }
+    }, [tree]);
 
     // Mutation to send path to backend
     const { mutate } = useMutation({
@@ -20,7 +45,7 @@ const PathLoader = () => {
         },
         onSuccess: (data) => {
             console.log("Backend response:", data);
-            if (data.subfolders) setSubfolders(data.subfolders);
+            if (data.tree) setTree(data.tree); // 👈 only store the folder tree object
         },
     });
 
@@ -38,25 +63,15 @@ const PathLoader = () => {
         },
     });
 
-    // Load saved path from localStorage on mount
-    useEffect(() => {
-        const savedPath = localStorage.getItem("localPath");
-        if (savedPath) {
-            setPath(savedPath);
-            // auto-load if path exists
-            mutate(savedPath);
-        }
-    }, []);
-
     const handleLoad = () => {
         if (!path) return;
         localStorage.setItem("localPath", path);
         mutate(path);
     };
 
-    const handleFolderClick = (folder: string) => {
-        const fullPath = `${path}\\${folder}`;
-        loadImagesMutation.mutate(fullPath);
+    const handleFolderClick = (folderPath: string) => {
+        setCurrentFolder(folderPath);
+        loadImagesMutation.mutate(folderPath);
     };
 
     return (
@@ -64,7 +79,7 @@ const PathLoader = () => {
             <div className="grid grid-cols-[auto_1fr] gap-2 px-2 pb-2 h-full w-full">
                 <div className="col-start-1 max-w-fit">
                     <div
-                        className="row-start-2 row-span-1
+                        className="bg-chart-4 row-start-2 row-span-1
                                p-2 grid grid-rows-[auto_1fr]
                                h-full border-2 rounded-md ">
                         <div className="row-start-1 mb-2 flex gap-2 items-center">
@@ -73,7 +88,7 @@ const PathLoader = () => {
                                 value={path}
                                 onChange={(e) => setPath(e.target.value)}
                                 placeholder="Enter local folder path"
-                                className="border px-2 py-1 rounded"
+                                className="bg-background dark:bg-black dark:text-white max-w-50 border px-2 py-1 rounded"
                             />
                             <Button
                                 onClick={handleLoad}
@@ -83,37 +98,17 @@ const PathLoader = () => {
                             </Button>
                         </div>
                         <div className="row-start-2">
-                            {subfolders.map((folder, idx) => (
-                                <li key={idx}
-                                    className="bg-card hover:bg-card/60 list-none border-2 my-1 p-2 rounded"
-                                    onClick={() => handleFolderClick(folder)}
-                                >
-                                    {folder}
-                                </li>
-                            ))}
+                            {tree && (
+                                <FolderTree
+                                    node={tree}
+                                    onClick={handleFolderClick}
+                                    currentFolder={currentFolder}
+                                />
+                            )}
                         </div>
                     </div>
                 </div>
-                <div className="col-start-2 border-2 rounded-md overflow-y-auto">
-                    <div className="h-full overflow-y-auto p-2">
-                        <div className="columns-2 sm:columns-3 lg:columns-4 gap-4">
-                            {images.map(img => (
-                                <div
-                                    key={img.name}
-                                    className="mb-4 p-2 w-full rounded-lg hover:bg-black dark:hover:bg-white flex flex-col justify-center items-center text-center break-inside-avoid"
-                                >
-                                    <img
-                                        src={img.url}
-                                        alt={img.name}
-                                        className="p-2 hover:opacity-90 transition object-cover object-center"
-                                    />
-                                    <p className="bg-card px-2 rounded ">{img.name}</p>
-                                </div>
-                            ))}
-                        </div>
-
-                    </div>
-                </div>
+                <GalleryContainer images={images} />
             </div>
         </div>
     )
