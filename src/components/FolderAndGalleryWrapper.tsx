@@ -9,7 +9,7 @@ interface FolderNode {
     children: FolderNode[];
 }
 
-const PathLoader = () => {
+const FolderAndGalleryWrapper = () => {
 
     const [path, setPath] = useState("");
     const [tree, setTree] = useState<FolderNode | null>(null);
@@ -26,12 +26,6 @@ const PathLoader = () => {
         }
     }, []);
 
-    useEffect(() => {
-        if (tree) {
-            console.log("Tree object in state:", tree);
-        }
-    }, [tree]);
-
     // Mutation to send path to backend
     const { mutate } = useMutation({
         mutationFn: async (localPath: string) => {
@@ -43,7 +37,6 @@ const PathLoader = () => {
             return res.json();
         },
         onSuccess: (data) => {
-            console.log("Backend response:", data);
             if (data.tree) setTree(data.tree); // 👈 only store the folder tree object
         },
     });
@@ -57,8 +50,8 @@ const PathLoader = () => {
                     setImages={setImages} />
                 <GalleryContainer images={images} />
             </div>
-        </div>
+        </div>  
     )
 }
 
-export default PathLoader
+export default FolderAndGalleryWrapper

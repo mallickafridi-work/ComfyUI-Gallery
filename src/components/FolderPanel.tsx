@@ -45,7 +45,7 @@ const FolderPanel = ({ path, setPath, tree, mutate, currentFolder, setCurrentFol
                             setPath(stripQuotes(e.target.value))
                         }}
                         placeholder="Enter local folder path"
-                        className="bg-background max-w-50 border border-ring px-2 py-1 rounded"
+                        className="bg-input max-w-50 border border-ring px-2 py-1 rounded"
                     />
                     <Button
                         onClick={handleLoad}

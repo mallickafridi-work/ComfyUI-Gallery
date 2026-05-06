@@ -1,12 +1,12 @@
 import Header from "./components/Header"
-import PathLoader from "./components/PathLoader"
+import FolderAndGalleryWrapper from "./components/FolderAndGalleryWrapper"
 
 export function App() {
   return (
     <>
       <div className='grid grid-rows-[auto_1fr] h-screen w-screen'>
         <Header />
-        <PathLoader />
+        <FolderAndGalleryWrapper />
       </div>
     </>
   )
