@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { useAppStore } from "../store";
 import GalleryContainer from "./GalleryContainer";
 import FolderPanel from "./FolderPanel";
 
@@ -11,20 +12,7 @@ interface FolderNode {
 
 const FolderAndGalleryWrapper = () => {
 
-    const [path, setPath] = useState("");
-    const [tree, setTree] = useState<FolderNode | null>(null);
-    const [images, setImages] = useState<string[]>([]);
-    const [currentFolder, setCurrentFolder] = useState("");
-
-    // Load saved path from localStorage on mount
-    useEffect(() => {
-        const savedPath = localStorage.getItem("localPath");
-        if (savedPath) {
-            setPath(savedPath);
-            // auto-load if path exists
-            mutate(savedPath);
-        }
-    }, []);
+    const { path, setPath, tree, setTree, images, currentFolder, setCurrentFolder, setImages } = useAppStore();
 
     // Mutation to send path to backend
     const { mutate } = useMutation({
@@ -41,6 +29,16 @@ const FolderAndGalleryWrapper = () => {
         },
     });
 
+    // Load saved path from localStorage on mount
+    useEffect(() => {
+        const savedPath = localStorage.getItem("localPath");
+        if (savedPath) {
+            setPath(savedPath);
+            // auto-load if path exists
+            mutate(savedPath);
+        }
+    }, [mutate, setPath]);
+
     return (
         <div className="min-h-0">
             <div className="grid grid-cols-[auto_1fr] gap-2 px-2 pb-2 h-full w-full">
@@ -50,7 +48,7 @@ const FolderAndGalleryWrapper = () => {
                     setImages={setImages} />
                 <GalleryContainer images={images} />
             </div>
-        </div>  
+        </div>
     )
 }
 
