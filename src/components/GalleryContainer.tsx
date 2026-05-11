@@ -1,29 +1,12 @@
-import { useAppStore } from "../store";
+import CurrentPathInfo from "./CurrentPathInfo";
+import ImageGridWrapper from "./ImageGridWrapper";
 
 const GalleryContainer = () => {
 
-    const { images } = useAppStore();
-
     return (
-        <div className="bg-accent col-start-2 rounded-md overflow-y-auto">
-            <div className="h-full overflow-y-auto p-2">
-                <div className="columns-2 sm:columns-4 lg:columns-5 gap-2">
-                    {images.map((img) => (
-                        <div
-                            key={img.name}
-                            className="mb-4 p-2 rounded-xs hover:bg-blue-200 dark:hover:text-black flex flex-col justify-center items-center text-center break-inside-avoid"
-                        >
-                            <img
-                                src={img.url}
-                                alt={img.name}
-                                className="hover:opacity-90 transition object-cover object-center"
-                            />
-                            <p className="mt-2 px-2">{img.name}</p>
-                        </div>
-                    ))}
-                </div>
-
-            </div>
+        <div className="col-start-2 grid grid-rows-[auto_1fr] gap-y-1 overflow-y-auto">
+            <CurrentPathInfo />
+            <ImageGridWrapper />
         </div>
     )
 }

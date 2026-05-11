@@ -1,35 +1,18 @@
 import { Button } from "./ui/button";
 import FolderTree from "./FolderTree";
-import { useMutation } from "@tanstack/react-query";
 import { useAppStore } from "../store";
 
-const FolderPanel = ({ mutate }) => {
+const FolderPanel = ({ mutate }: any) => {
 
-    const { path, setPath, tree, currentFolder, setCurrentFolder, setImages } = useAppStore();
-
-    const loadImagesMutation = useMutation({
-        mutationFn: async (folderPath: string) => {
-            const res = await fetch("/api/load-images", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ path: folderPath }),
-            });
-            return res.json();
-        },
-        onSuccess: (data) => {
-            if (data.images) setImages(data.images);
-        },
-    });
+    const { path, setPath, tree, getImages } = useAppStore();
 
     const handleLoad = () => {
         if (!path) return;
         localStorage.setItem("localPath", path);
         mutate(path);
-    };
 
-    const handleFolderClick = (folderPath: string) => {
-        setCurrentFolder(folderPath);
-        loadImagesMutation.mutate(folderPath);
+        // also load images for the root folder
+        getImages(path);
     };
 
     const stripQuotes = (str: string) => str.replace(/^"(.*)"$/, "$1");
@@ -38,8 +21,7 @@ const FolderPanel = ({ mutate }) => {
         <div className="col-start-1 max-w-fit">
             <div
                 className="bg-accent row-start-2 row-span-1
-                               p-2 grid grid-rows-[auto_1fr]
-                               h-full rounded-md ">
+                            h-full p-2 rounded-md grid grid-rows-[auto_1fr]">
                 <div className="row-start-1 mb-2 flex gap-2 items-center">
                     <input
                         type="text"
@@ -50,20 +32,11 @@ const FolderPanel = ({ mutate }) => {
                         placeholder="Enter local folder path"
                         className="bg-input max-w-50 border border-ring px-2 py-1 rounded"
                     />
-                    <Button
-                        onClick={handleLoad}
-                        className="px-3 py-1 rounded"
-                    >
-                        Load
-                    </Button>
+                    <Button className="px-3 py-1 rounded" onClick={handleLoad}> Load </Button>
                 </div>
                 <div className="row-start-2">
                     {tree && (
-                        <FolderTree
-                            node={tree}
-                            onClick={handleFolderClick}
-                            currentFolder={currentFolder}
-                        />
+                        <FolderTree />
                     )}
                 </div>
             </div>

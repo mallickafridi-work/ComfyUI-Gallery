@@ -6,7 +6,7 @@ import FolderPanel from "./FolderPanel";
 
 const FolderAndGalleryWrapper = () => {
 
-    const { setPath, setTree } = useAppStore();
+    const { setPath, setTree, getImages } = useAppStore();
 
     // Mutation to send path to backend
     const { mutate } = useMutation({
@@ -30,12 +30,14 @@ const FolderAndGalleryWrapper = () => {
             setPath(savedPath);
             // auto-load if path exists
             mutate(savedPath);
+            // also load images for the root folder
+            getImages(savedPath);
         }
-    }, [mutate, setPath]);
+    }, [mutate, getImages]);
 
     return (
         <div className="min-h-0">
-            <div className="grid grid-cols-[auto_1fr] gap-2 px-2 pb-2 h-full w-full">
+            <div className="grid grid-cols-[auto_1fr] gap-1 px-2 pb-2 h-full w-full">
                 <FolderPanel mutate={mutate} />
                 <GalleryContainer />
             </div>

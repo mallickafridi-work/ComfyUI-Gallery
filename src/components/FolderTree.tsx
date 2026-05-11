@@ -1,21 +1,26 @@
 // src/FolderTree.tsx
 import { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
+import { useAppStore } from "@/store";
 
-function FolderTree({ node, onClick, currentFolder }) {
+function FolderTree() {
+
+  const { tree } = useAppStore();
+
   return (
     <ul className="pl-2 transition-all duration-200 ease-in-out">
       <FolderNode
-        key={node.path}
-        node={node}
-        onClick={onClick}
-        currentFolder={currentFolder}
+        key={tree.path}
+        node={tree}
       />
     </ul>
   );
 }
 
-function FolderNode({ node, onClick, currentFolder }) {
+function FolderNode({ node }: any) {
+
+  const { getImages, currentFolder } = useAppStore();
+
   const [open, setOpen] = useState(false);
 
   const toggle = () => setOpen(!open);
@@ -24,11 +29,11 @@ function FolderNode({ node, onClick, currentFolder }) {
   return (
     <li className="list-none">
       <div
-        className={`border-t border-l border-ring flex items-center gap-2 cursor-pointer rounded-xs px-2 py-1 my-0.5
+        className={`border border-ring flex items-center gap-2 cursor-pointer rounded-xs px-2 py-1 my-0.5
           ${isActive ? "bg-blue-300 dark:bg-blue-900 font-semibold" : "hover:bg-gray-100 dark:hover:bg-gray-800"}`}
         onClick={() => {
           toggle();
-          onClick(node.path);
+          getImages(node.path);
         }}
       >
 
@@ -48,11 +53,11 @@ function FolderNode({ node, onClick, currentFolder }) {
 
       {open && node.children && node.children.length > 0 && (
         <ul className="pl-4">
-          {node.children.map((child) => (
+          {node.children.map((child: any) => (
             <FolderNode
               key={child.path}
               node={child}
-              onClick={onClick}
+              onClick={getImages}
               currentFolder={currentFolder}
             />
           ))}
