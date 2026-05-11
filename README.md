@@ -1,6 +1,6 @@
 # ComfyUI-Gallery
 
-ComfyUI-Gallery is a gallery-style desktop application designed to display images generated using ComfyUI along with their associated metadata.
+ComfyUI-Gallery is a gallery-style web-application designed to display images generated using ComfyUI along with their associated metadata.
 
 The goal of this project is to provide a centralized interface where users can view their generated images and inspect the metadata or generation details behind each image.
 
