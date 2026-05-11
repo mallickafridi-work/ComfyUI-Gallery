@@ -1,18 +1,12 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useAppStore } from "../store";
 import GalleryContainer from "./GalleryContainer";
 import FolderPanel from "./FolderPanel";
 
-interface FolderNode {
-    name: string;
-    path: string;
-    children: FolderNode[];
-}
-
 const FolderAndGalleryWrapper = () => {
 
-    const { path, setPath, tree, setTree, images, currentFolder, setCurrentFolder, setImages } = useAppStore();
+    const { setPath, setTree } = useAppStore();
 
     // Mutation to send path to backend
     const { mutate } = useMutation({
@@ -42,11 +36,8 @@ const FolderAndGalleryWrapper = () => {
     return (
         <div className="min-h-0">
             <div className="grid grid-cols-[auto_1fr] gap-2 px-2 pb-2 h-full w-full">
-                <FolderPanel
-                    path={path} setPath={setPath} tree={tree} mutate={mutate}
-                    currentFolder={currentFolder} setCurrentFolder={setCurrentFolder}
-                    setImages={setImages} />
-                <GalleryContainer images={images} />
+                <FolderPanel mutate={mutate} />
+                <GalleryContainer />
             </div>
         </div>
     )

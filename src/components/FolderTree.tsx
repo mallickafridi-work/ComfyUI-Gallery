@@ -1,6 +1,6 @@
 // src/FolderTree.tsx
 import { useState } from "react";
-import { FolderOpen, Folder } from "lucide-react";
+import { ChevronDown, ChevronRight } from "lucide-react";
 
 function FolderTree({ node, onClick, currentFolder }) {
   return (
@@ -34,12 +34,12 @@ function FolderNode({ node, onClick, currentFolder }) {
 
         {node.children && node.children.length > 0 ? (
           open ? (
-            <FolderOpen className={`w-4 h-4 ${isActive ? "text-blue-600" : "text-blue-500"}`} />
+            <ChevronDown className={`w-4 h-4 ${isActive ? "text-blue-600" : "text-blue-500"}`} />
           ) : (
-            <Folder className={`w-4 h-4 ${isActive ? "text-blue-600" : "text-blue-500"}`} />
+            <ChevronRight className={`w-4 h-4 ${isActive ? "text-blue-600" : "text-blue-500"}`} />
           )
         ) : (
-          <Folder className={`w-4 h-4 ${isActive ? "text-blue-600" : "text-blue-500"}`} />
+          <ChevronRight className={`w-4 h-4 ${isActive ? "text-blue-600" : "text-blue-500"}`} />
         )}
 
 

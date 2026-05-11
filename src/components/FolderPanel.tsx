@@ -1,8 +1,11 @@
 import { Button } from "./ui/button";
 import FolderTree from "./FolderTree";
 import { useMutation } from "@tanstack/react-query";
+import { useAppStore } from "../store";
 
-const FolderPanel = ({ path, setPath, tree, mutate, currentFolder, setCurrentFolder, setImages }) => {
+const FolderPanel = ({ mutate }) => {
+
+    const { path, setPath, tree, currentFolder, setCurrentFolder, setImages } = useAppStore();
 
     const loadImagesMutation = useMutation({
         mutationFn: async (folderPath: string) => {

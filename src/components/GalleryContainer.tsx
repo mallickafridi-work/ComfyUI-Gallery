@@ -1,4 +1,8 @@
-const GalleryContainer = ({ images }) => {
+import { useAppStore } from "../store";
+
+const GalleryContainer = () => {
+
+    const { images } = useAppStore();
 
     return (
         <div className="bg-accent col-start-2 rounded-md overflow-y-auto">

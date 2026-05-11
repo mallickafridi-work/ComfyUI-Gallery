@@ -10,11 +10,11 @@ interface FolderNode {
 interface AppState {
     path: string;
     tree: FolderNode | null;
-    images: string[];
+    images: { name: string, url: string }[];
     currentFolder: string;
     setPath: (path: string) => void;
     setTree: (tree: FolderNode | null) => void;
-    setImages: (images: string[]) => void;
+    setImages: (images: { name: string, url: string }[]) => void;
     setCurrentFolder: (folder: string) => void;
 }
 
