@@ -8,9 +8,14 @@ interface FolderNode {
     onClick: () => void
 }
 
+interface ImageItem {
+    name: string;
+    url: string;
+}
+
 interface AppState {
     path: string;
-    tree: FolderNode;
+    tree: FolderNode | null;
     images: { name: string, url: string }[];
     currentFolder: string;
     setPath: (path: string) => void;
@@ -18,6 +23,8 @@ interface AppState {
     setImages: (images: { name: string, url: string }[]) => void;
     setCurrentFolder: (folder: string) => void;
     getImages: (folderPath: string) => void;
+    selectedImage: ImageItem | null
+    setSelectedImage: (selectedImage: ImageItem | null) => void
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -33,9 +40,12 @@ export const useAppStore = create<AppState>((set) => ({
     currentFolder: "",
     setCurrentFolder: (folder) => set({ currentFolder: folder }),
 
+    selectedImage: null,
+    setSelectedImage: (selectedImage) => set({ selectedImage }),
+
     // unified folder click handler
     getImages: (folderPath) => {
-        set({ currentFolder: folderPath });
+        set({ currentFolder: folderPath, selectedImage: null });
         // trigger mutation here
         fetch("/api/load-images", {
             method: "POST",

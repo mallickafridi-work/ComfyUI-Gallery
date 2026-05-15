@@ -2,7 +2,7 @@ import { Folder, Home } from "lucide-react";
 import { useAppStore } from "../store";
 
 const CurrentPathInfo = () => {
-  const { tree, currentFolder, handleFolderClick } = useAppStore();
+  const { tree, currentFolder, getImages } = useAppStore();
 
   if (!tree || !currentFolder) {
     return <div className="rounded-t-md bg-accent italic text-gray-500">
@@ -25,12 +25,12 @@ const CurrentPathInfo = () => {
   const trail = findTrail(tree, currentFolder) || [tree];
 
   return (
-    <div className="flex items-center gap-2 px-2 py-1 bg-accent rounded-t-md py-2">
+    <div className="flex items-center gap-2 px-2 py-2 bg-accent rounded-t-md">
       {trail.map((crumb, idx) => (
         <span key={crumb.path} className="flex items-center">
           <Folder className="w-7 h-5 mr-0.5" />
           <button
-            onClick={() => handleFolderClick(crumb.path)}
+            onClick={() => getImages(crumb.path)}
             className="hover:underline truncate"
           >
             {crumb.name}
