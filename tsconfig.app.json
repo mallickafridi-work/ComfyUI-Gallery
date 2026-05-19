@@ -27,7 +27,7 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "ignoreDeprecations": "6.0",
+    "ignoreDeprecations": "5.0",
     "baseUrl": ".",
     "paths": {
       "@/*": [
@@ -37,6 +37,6 @@
   },
   "include": [
     "src",
-    "src/server.js"
+    "backend/server.js"
   ]
 }

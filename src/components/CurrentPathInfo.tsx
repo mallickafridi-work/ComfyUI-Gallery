@@ -1,16 +1,32 @@
 import { Folder, Home } from "lucide-react";
 import { useAppStore } from "../store";
 
-const CurrentPathInfo = () => {
-  const { tree, currentFolder, getImages } = useAppStore();
+interface FolderNode {
+  name: string;
+  path: string;
+  children?: FolderNode[];
+}
+
+const CurrentPathInfo: React.FC = () => {
+  const { tree, currentFolder, getImages } = useAppStore() as {
+    tree: FolderNode | null;
+    currentFolder: string | null;
+    getImages: (path: string) => void;
+  };
 
   if (!tree || !currentFolder) {
-    return <div className="rounded-t-md bg-accent italic text-gray-500">
-      <Home />
-    </div>;
+    return (
+      <div className="rounded-t-md bg-accent italic text-gray-500">
+        <Home />
+      </div>
+    );
   }
 
-  const findTrail = (node, targetPath, trail = []) => {
+  const findTrail = (
+    node: FolderNode,
+    targetPath: string,
+    trail: FolderNode[] = []
+  ): FolderNode[] | null => {
     const newTrail = [...trail, node];
     if (node.path === targetPath) return newTrail;
     if (node.children) {
@@ -35,11 +51,13 @@ const CurrentPathInfo = () => {
           >
             {crumb.name}
           </button>
-          {idx < trail.length - 1 && <span className="mx-1 text-gray-500">›</span>}
+          {idx < trail.length - 1 && (
+            <span className="mx-1 text-gray-500">›</span>
+          )}
         </span>
       ))}
     </div>
   );
 };
 
-export default CurrentPathInfo  
+export default CurrentPathInfo;

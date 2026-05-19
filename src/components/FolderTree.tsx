@@ -7,6 +7,10 @@ function FolderTree() {
 
   const { tree } = useAppStore();
 
+  if (!tree) {
+    return null;
+  }
+
   return (
     <ul className="pl-2 transition-all duration-200 ease-in-out">
       <FolderNode
