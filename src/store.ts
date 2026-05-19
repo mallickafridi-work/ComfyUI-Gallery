@@ -16,15 +16,17 @@ interface ImageItem {
 interface AppState {
     path: string;
     tree: FolderNode | null;
-    images: { name: string, url: string }[];
     currentFolder: string;
     setPath: (path: string) => void;
     setTree: (tree: FolderNode | null) => void;
-    setImages: (images: { name: string, url: string }[]) => void;
     setCurrentFolder: (folder: string) => void;
+
+    images: { name: string, url: string }[];
+    selectedImage: ImageItem | null;
+    selectedIndex: number | null;
+    setSelectedImage: (selectedImage: ImageItem | null, index?: number | null) => void
+
     getImages: (folderPath: string) => void;
-    selectedImage: ImageItem | null
-    setSelectedImage: (selectedImage: ImageItem | null) => void
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -35,13 +37,14 @@ export const useAppStore = create<AppState>((set) => ({
     setTree: (tree) => set({ tree }),
 
     images: [],
-    setImages: (images) => set({ images }),
+    selectedImage: null,
+    selectedIndex: null,
+
+    setSelectedImage: (selectedImage, index = null) =>
+        set({ selectedImage, selectedIndex: index }),
 
     currentFolder: "",
     setCurrentFolder: (folder) => set({ currentFolder: folder }),
-
-    selectedImage: null,
-    setSelectedImage: (selectedImage) => set({ selectedImage }),
 
     // unified folder click handler
     getImages: (folderPath) => {

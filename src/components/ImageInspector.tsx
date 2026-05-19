@@ -1,14 +1,40 @@
+import { useEffect } from "react";
 import { useAppStore } from "../store";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { Button } from "./ui/button";
 
 const ImageInspector = () => {
 
-    const { selectedImage, setSelectedImage } = useAppStore();
+    const { images, selectedImage, selectedIndex, setSelectedImage } = useAppStore();
 
     const closeWindow = () => {
         setSelectedImage(null);
     };
+
+    const showNextImage = () => {
+        if (selectedIndex === null) return;
+        const nextIndex = (selectedIndex + 1) % images.length;
+        setSelectedImage(images[nextIndex], nextIndex);
+    };
+
+    const showPrevImage = () => {
+        if (selectedIndex === null) return;
+        const prevIndex = (selectedIndex - 1 + images.length) % images.length;
+        setSelectedImage(images[prevIndex], prevIndex);
+    };
+
+    // keyboard navigation
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (!selectedImage) return;
+            if (e.key === "ArrowRight") showNextImage();
+            if (e.key === "ArrowLeft") showPrevImage();
+            if (e.key === "Escape") closeWindow();
+        };
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [selectedImage, selectedIndex, images]);
+
     return (
         <>
             {selectedImage && (
@@ -24,6 +50,7 @@ const ImageInspector = () => {
                             />
                             {/* Left button */}
                             <Button
+                                onClick={showPrevImage}
                                 className="absolute left-1 w-8 h-10 rounded-full opacity-0 transition-opacity duration-400 delay-500 group-hover:opacity-100"
                             >
                                 <ChevronLeft className="size-6" />
@@ -31,6 +58,7 @@ const ImageInspector = () => {
 
                             {/* Right button */}
                             <Button
+                                onClick={showNextImage}
                                 className="absolute right-1 w-8 h-10 rounded-full opacity-0 transition-opacity duration-400 delay-500 group-hover:opacity-100"
                             >
                                 <ChevronRight className="size-6" />
