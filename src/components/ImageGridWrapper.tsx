@@ -13,7 +13,7 @@ const ImageGridWrapper = () => {
     return (
         <>
             <ImageInspector />
-            <div className="row-start-2  z-0 h-full bg-accent rounded-b-md overflow-y-auto">
+            <div className="row-start-2 absolute z-0 h-full bg-accent rounded-b-md overflow-y-auto">
                 <div className="h-full overflow-y-auto p-2">
                     <div className="columns-2 sm:columns-4 lg:columns-5 gap-2">
                         {images.map((img) => (

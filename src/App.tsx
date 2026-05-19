@@ -1,12 +1,12 @@
-import Header from "./components/Header"
-import FolderAndGalleryWrapper from "./components/FolderAndGalleryWrapper"
+import TitleAndFolderWrapper from "./components/TitleAndFolderWrapper"
+import NavbarAndGalleryWrapper from "./components/NavbarAndGalleryWrapper"
 
 export function App() {
   return (
     <>
-      <div className='grid grid-rows-[auto_1fr] h-screen w-screen'>
-        <Header />
-        <FolderAndGalleryWrapper />
+      <div className='grid p-2 grid-cols-[auto_1fr] h-screen w-screen'>
+        <TitleAndFolderWrapper />
+        <NavbarAndGalleryWrapper />
       </div>
     </>
   )

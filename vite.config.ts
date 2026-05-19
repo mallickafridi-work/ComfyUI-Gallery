@@ -4,13 +4,23 @@ import react from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
 
 export default defineConfig({
-  base: "/comfyui-gallery/",   // ⭐ REQUIRED for ComfyUI
+  base: "/comfyui-gallery/",   // REQUIRED for ComfyUI
 
   plugins: [react(), tailwindcss()],
 
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+    },
+  },
+
+  // 👇 this block is for dev-mode only
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:5000",
+        changeOrigin: true,
+      },
     },
   },
 })

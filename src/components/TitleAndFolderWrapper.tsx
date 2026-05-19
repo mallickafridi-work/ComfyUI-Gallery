@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useAppStore } from "../store";
-import GalleryContainer from "./GalleryContainer";
 import FolderPanel from "./FolderPanel";
+import Header from "./Header";
 
-const FolderAndGalleryWrapper = () => {
+const TitleAndFolderWrapper = () => {
 
     const { setPath, setTree, getImages } = useAppStore();
 
@@ -37,12 +37,12 @@ const FolderAndGalleryWrapper = () => {
 
     return (
         <div className="min-h-0">
-            <div className="grid grid-cols-[auto_1fr] gap-1 px-2 pb-2 h-full w-full">
+            <div className="grid grid-rows-[auto_1fr] h-full w-full">
+                <Header />
                 <FolderPanel mutate={mutate} />
-                <GalleryContainer />
             </div>
         </div>
     )
 }
 
-export default FolderAndGalleryWrapper
+export default TitleAndFolderWrapper
